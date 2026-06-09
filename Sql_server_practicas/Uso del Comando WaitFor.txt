@@ -1,0 +1,12 @@
+El comando WaitFor nos permite generar una espera
+
+begin tran
+
+update person.person set suffix =e.NationalIDNumber
+from person.person p
+inner join HumanResources.Employee e
+on e.BusinessEntityID =p.BusinessEntityID 
+where e.jobtitle ='Sales Representative'
+
+wait delay '00:00:07'
+rollback tran

@@ -1,0 +1,45 @@
+STORE PROCEDURE.
+Es un stored procedure dinamico en function de un parametron, define una sentencia SQL determinada
+y retorna resultados específicos según ese parámetro.
+este puede retornar multiples resultados, pueden utilizarse por ejemplo, para generar reportes ordenados por un 
+determinado campo. 
+también se puede utilizar para generar consultas dinámicas especificas.
+
+Ejemplos de store procedure dinámicos. 
+-----------------------------------------------------------------------------------------------
+alter proc SEL_Productos(
+         @orden char(1)
+)
+as 
+declare @script nvarchar(max)
+declare @orderby nvarchar(500)
+
+set @script ='select productID, name, listprice from production.product'
+set @order by = ( case when @orden ='N' Then 'order by name '
+                        when @orden ='I' then 'order by productID'
+                        when @orden ='P' then 'order by listprice' end )
+set @script =@script +orderby
+Exex SP_ExecuteSQL @script
+
+Segundo Ejemplo de Store Procedure Dinamicos output.
+
+----------------------------------------------------------------------------------------------
+
+declare @out nvarchar(max) ---lo definimos nvarchar porque es el tipo requerido por sp_execute
+exec SEL_productosOUTPUT 'P',@out output
+exec sp_executesql @out
+
+create proc SEL_ProductosOUTPUT(
+         @orden char(1)
+         @out   varchar(max) output
+) 
+as 
+declare @script nvarchar(max)
+declare @orderby nvarchar(500)
+
+set @script ='select productID, name, listprice from production.product'
+set @order by = ( case when @orden ='N' Then 'order by name '
+                        when @orden ='I' then 'order by productID'
+                        when @orden ='P' then 'order by listprice' end )
+set @script =@script +orderby
+Exex SP_ExecuteSQL @script

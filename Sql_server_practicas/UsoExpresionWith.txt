@@ -1,0 +1,12 @@
+Ejemplo de uso de la expression with.
+
+with employee as(
+select
+ BusinessEntityID,NationalIDNumber
+ from HumanResources.Employee
+ where jobtitle ='Sales Representative'
+)
+update Person.Person set syffix =e.NationalIDNumber
+from Person.Person P
+inner join employee e
+on e.BusinessEntityID = p.BusinessEntityID

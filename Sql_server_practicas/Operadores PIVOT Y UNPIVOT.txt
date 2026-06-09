@@ -1,0 +1,48 @@
+Operadores PIVOT Y UNPIVOT
+ son operadores que permiten trasponer filas por columnas o viceversas y agrupar los registros de una consulta.
+al ser un operador que agrupa registros, no es posible utilizar un group by en una consulta con pivot o unpivot.
+su uso puede aplicarse para realizar reportes analiticos sobre determinadas variables.
+
+Ejemplo de operadores pivot
+
+with VentasPorCantegoria as (
+ select distinct datepart(year,soh.orderdate) as anio,
+ pc.[name] as categoria,
+ p.productID
+ FROM sales.SalesOrderHeader SOH
+ INNER JOIN Sales.OrderDetail SOD on SOD.SalesOrderID = SOH.SalesOrderID
+ INNER JOIN production.product p on p.productID =SOD.productID
+ INNER JOIN production.productSubcategory PSC on PSC.productSubcategoryID = p.productSubcategoryID
+ INNER JOIN production.productCategory PC ON PC.productCategoryID =PSC.productCategoryID)
+)
+
+--Aplicacion de uso de la clasula pivot.
+// los corchetes indican para ser referencia a  campos
+// se realiza una transposicion de los campos
+select * from VentasPorCategoria
+pivot (count(productID) for anio in ([2014],[2013],[2011]) as pivotable order by categoria 
+
+
+//Aplicacion de UNPIVOT
+
+with VentasPorCantegoria as (
+ select distinct datepart(year,soh.orderdate) as anio,
+ pc.[name] as categoria,
+ p.productID
+ FROM sales.SalesOrderHeader SOH
+ INNER JOIN Sales.OrderDetail SOD on SOD.SalesOrderID = SOH.SalesOrderID
+ INNER JOIN production.product p on p.productID =SOD.productID
+ INNER JOIN production.productSubcategory PSC on PSC.productSubcategoryID = p.productSubcategoryID
+ INNER JOIN production.productCategory PC ON PC.productCategoryID =PSC.productCategoryID)
+)
+
+--Aplicacion de uso de la clasula UNpivot.
+// los corchetes indican para ser referencia a  campos
+// se realiza una transposicion de los campos
+select * from VentasPorCategoria
+pivot (count(productID) for anio in ([2014],[2013],[2011]) as pivotable order by categoria 
+UNPIVOT (PRODUCTID FOR ANIO IN [2014],[2013],[2011])) as unpivotTable
+
+
+
+ 
