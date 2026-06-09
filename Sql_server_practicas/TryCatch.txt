@@ -1,0 +1,29 @@
+begin try
+
+set nocount on
+insert into sales.salesperson
+values(270,20,100,200,0,25000,200000,newid(),getdate())
+end try
+begin catch
+raiserror('Error al insertar una venta'16,1)
+end catch
+
+--Errores Personalizados 
+--ID Error >50000
+--Severity 1 a 25
+
+--sp_addmessage 50001,16,'Ocurrio un error de foreign key en la tabla sales.salesperson,por favor revise los datos ingresados'
+
+begin try
+
+set nocount on
+insert into sales.salesperson
+values(270,20,100,200,0,25000,200000,newid(),getdate())
+end try
+begin catch
+ if @@error =547
+   raiseerror(50001,-1,4)
+else
+    raiserror('(0)Error inesperado',16)
+end catch
+---sp_dropmessage 50001 --borramos el mensaje de excepcion que hemos creado en la bases de datos

@@ -1,0 +1,20 @@
+Uso de la Funcionalidad Full -Text Search
+
+Ejemplo de la Funcion Contains
+
+select * from person.Address A
+where contains (A.AddressLine1,'"first avenue"')
+
+uso de constains con los operadores and/and not/or
+
+select * from person.Address A
+where contains (A.AddressLine1,'"avenue and port and not 34"')
+
+select * from person.Address A
+where contains (A.AddressLine1,'"avenue or port"')
+
+
+select * from person.Address A
+where contains (A.AddressLine1,'"(36 and avenue) or port"')
+
+uso de la function near--> permite buscar entre dos palabras en una busqueda de tipo sql.
